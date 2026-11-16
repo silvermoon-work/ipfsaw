@@ -1,0 +1,60 @@
+{
+  "name": "ipfsaw",
+  "version": "0.1.0-rc.0",
+  "private": true,
+  "description": "Thin unscoped CLI entry delegating to @silvermoon-work/ipfsaw.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silvermoon-work/ipfsaw.git"
+  },
+  "homepage": "https://github.com/silvermoon-work/ipfsaw#readme",
+  "bugs": {
+    "url": "https://github.com/silvermoon-work/ipfsaw/issues"
+  },
+  "bin": {
+    "ipfsaw": "./dist/bin.js"
+  },
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "packageManager": "pnpm@11.28.12",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "check-scripts": "node scripts/check-scripts.mjs",
+    "format": "node scripts/format.mjs",
+    "format-check": "node scripts/format-check.mjs",
+    "lint": "node scripts/lint.mjs",
+    "lint-package": "node scripts/lint-package.mjs",
+    "test": "node scripts/test.mjs",
+    "test-coverage": "node scripts/test-coverage.mjs",
+    "typecheck": "node scripts/typecheck.mjs",
+    "verify-candidate": "node scripts/verify-candidate.mjs"
+  },
+  "dependencies": {
+    "@silvermoon-work/ipfsaw": "0.1.0-rc.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.6",
+    "@vitest/coverage-v8": "5.1.0",
+    "eslint": "10.15.0",
+    "globals": "17.14.0",
+    "prettier": "3.10.1",
+    "publint": "0.3.25",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.2",
+    "vitest": "5.1.0"
+  }
+}
