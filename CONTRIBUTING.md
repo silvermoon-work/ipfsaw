@@ -34,3 +34,12 @@ pnpm test test/bin.test.ts
 一次，再在独立新 consumer 验证实际 packed manifest 与准确双制品。禁止
 stage／commit／push／发布或启动第二份 Silvermoon idea，除非任务明确授权。
 本地完整门禁不是未来准确 SHA 远端 CI 或 npm Trusted Publishing 的替代品。
+
+发布流程见 [README 的发布边界](./README.md#发布边界)。门禁固定依赖
+`@silvermoon-work/devtool.publish-gate@0.1.0-rc.4`，通过实际包的
+`prepublishOnly` 执行；该命令要求受控 GitHub Actions 发布上下文，不是本机
+离线预检命令。不要绕过生命周期、改用源码候选或配置长期 npm token。
+手动 Workflow 仅 dry-run；当前 `0.1.0-rc.0` 已获准解除 private 并准备发布，
+但仍需准确 SHA 的成功 main-push CI、Trusted Publisher 配置和最终 tag 授权。
+本次沿用 OKR Agent 原生 pnpm 发布方式，
+不声称符合 `AGENTS.md` 的旧固定 release／tarball publisher 接口。

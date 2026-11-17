@@ -1,13 +1,13 @@
-# ipfsaw（私有开发候选）
+# ipfsaw（发布候选）
 
 `ipfsaw@0.1.0-rc.0` 是独立的无 scope CLI 薄入口，唯一运行时依赖为准确的
 `@silvermoon-work/ipfsaw@0.1.0-rc.0`。它只将原始用户参数交给主包的
 `main` 并沿用其退出码，不复制预览、registry、IPFS、浏览器或信号处理逻辑。
 本仓不提供额外库 API，不二次执行 npx，也不以子进程包装主包。
 
-**当前保持 private，未授权发布。** 准确的 scoped 主包已可从本机配置的
-registry 获取；这不代表无 scope alias 已发布或完成 registry 验收。
-两包发布都需要准确版本、提交及明确授权。
+**当前准备发布 `0.1.0-rc.0`，尚未发布该版本。** 包已解除 private；
+准确的 scoped 主包可从本机配置的 registry 获取，但不代表无 scope alias
+已完成 registry 验收。真实发布仍需要准确版本、提交及明确授权。
 
 ## 开发安装
 
@@ -26,8 +26,10 @@ node dist/bin.js --version
 mock 替代准确主包。
 
 用户已明确批准仅 `@silvermoon-work/ipfsaw@0.1.0-rc.0` 的发布冷却期例外，
-记录在 `minimumReleaseAgeExclude`。其他包的冷却策略不变；这不是全局关闭
-供应链检查，也不授权自动扩展到后续版本。
+记录在 `minimumReleaseAgeExclude`。发布门禁按本次指定的准确版本
+`@silvermoon-work/devtool.publish-gate@0.1.0-rc.4` 安装，同样仅对该版本
+保留安装时生成的冷却期例外。其他包的冷却策略不变；这不是全局关闭供应链检查，
+也不授权自动扩展到后续版本。
 
 ## CLI 行为
 
@@ -102,10 +104,29 @@ pnpm --config.ignore-scripts=true pack --out <exact-alias-candidate.tgz>
 
 ## 发布边界
 
-包仍显式设置 `private: true`。开放发布需要单独获准后调整此设置，
-确认准确版本和主干提交、真实依赖可用性、准确 SHA 远端质量检查、
-标准固定 release 入口与 publisher，以及 npm Trusted Publishing。
-当前没有启用发布 workflow。
+已按用户授权将 `0.1.0-rc.0` 准备为公开发布候选，设置 `private: false`。
+发布前仍须确认准确主干提交、真实依赖可用性、准确 SHA 远端质量检查，
+以及 npm Trusted Publishing；准备候选不等于授权推送发布 tag。
+
+已参考 OKR Agent 配置 [发布 Workflow](./.github/workflows/publish-npm.yaml)，
+根目录 [deliverable.yaml](./deliverable.yaml) 声明唯一 npm 交付包。
+固定安装的 `@silvermoon-work/devtool.publish-gate@0.1.0-rc.4` 通过
+`prepublishOnly: publish-gate check` 验证发布上下文，不使用本仓自制发布器。
+这项接入延续直接工具命令实验，与 `AGENTS.md` 的固定 release 入口和
+tarball publisher 约定存在差异，不宣称满足该旧接口。
+
+- 仅 `ipfsaw@<version>` tag push 触发真实发布路径；手动 workflow_dispatch
+  固定选择 `ipfsaw`，且始终 dry-run。
+- Workflow 完整检出历史、安装锁定依赖、选择唯一交付包并构建，再通过原生
+  pnpm 目录发布调用生命周期门禁；不在发布流程重跑完整 CI。
+- 门禁验证准确 SHA 的成功 main-push CI、全部兼容矩阵和聚合门禁，
+  同时核对 main 祖先关系、tag／版本、registry 状态和运行时依赖可用性。
+- GitHub 需要配置 `npm` environment，并在 npm 为 `ipfsaw` 配置绑定当前仓库、
+  `publish-npm.yaml` 和 `npm` environment 的 Trusted Publisher。Workflow 仅授予
+  contents/actions 读取与 id-token 写入权限，不配置 npm token。
+- 完成独立 consumer 验证、准确 SHA 的 main-push CI 和远端配置后，
+  可对同一 SHA 手动触发 dry-run；dry-run 成功也不证明 npm 已授予真实发布权限。
+  仍需另行授权准确版本和 SHA，才能推送 `ipfsaw@0.1.0-rc.0` tag。
 
 稳定 `X.Y.Z` 使用 `latest`；`X.Y.Z-rc.n` 仅使用 `rc`。未经明确授权，不发布、
 推送 release tag、改 dist-tag 或上传制品。不得使用长期 npm token。

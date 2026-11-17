@@ -38,14 +38,23 @@
   安装不使用本地 tarball override；锁文件与最终 packed manifest 保留准确 semver。
 - 用户明确批准该准确主包版本的 `minimumReleaseAgeExclude` 单版本例外，
   不扩展到其他依赖或后续版本，不关闭其他供应链检查。
+- 发布门禁固定依赖已发布的 `@silvermoon-work/devtool.publish-gate@0.1.0-rc.4`；
+  按用户指定准确版本安装，保留 pnpm 自动生成的该单版本冷却期例外。
 - `lint-package` 仅执行标准包检查，不再将当前 alias 的身份、准确版本、
   已安装依赖或源码文本写死为通用脚手架门禁；准确交付仍须最终 tarball
   和独立 consumer 的真实验证。
 - `pnpm lint-package` 直接运行 `publint --strict`，
   warnings／errors 均失败；使用默认打包检查但不发布，不替代最终交付 tarball 验证。
   整合者审查后负责最终交付的一次性 pack、独立 consumer 的真实主包联调和原生浏览器验收。
-- 当前包 private，无发布脚本／workflow。仍需准确 alias 交付验证与发布授权，
-  不搭建假成功 CI，不 publish、push tag、改 dist-tag 或上传制品。
+- 用户已授权准备 `ipfsaw@0.1.0-rc.0`，当前设置 `private: false`；
+  已参考 OKR Agent 接入 `publish-npm.yaml`、
+  根目录 `deliverable.yaml` 和 `prepublishOnly: publish-gate check`。
+  沿用原生 pnpm 目录发布，不引入自制发布器；这与 `AGENTS.md` 的固定 release
+  入口和 tarball publisher 约定存在公开差异，不宣称通过旧接口。
+- 发布 Workflow 仅接受 `ipfsaw@<version>` tag，手动触发固定目标且只 dry-run；
+  准备发布不等于授权推 tag。用户负责配置 npm Trusted Publisher，
+  仍需确认 `npm` environment、准确 alias 交付验证及准确 SHA 的 main-push CI。
+  获准准确版本和 SHA 前，不 publish、push tag、改 dist-tag 或上传制品。
 - PR/main CI 覆盖默认开发 Node 与 22.15.0 / 24.11.1 的完整检查和真实 CLI
   help/version 冒烟；聚合门禁要求默认及全部兼容矩阵成功。准确 SHA 的远端成功
   证据仍是发布前置条件，不得用本地检查替代或用 mock 主包假装完成真实交付。

@@ -1,7 +1,7 @@
 {
   "name": "ipfsaw",
   "version": "0.1.0-rc.0",
-  "private": true,
+  "private": false,
   "description": "Thin unscoped CLI entry delegating to @silvermoon-work/ipfsaw.",
   "type": "module",
   "license": "MIT",
@@ -28,6 +28,10 @@
   "engines": {
     "node": ">=22.15.0"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "packageManager": "pnpm@11.28.12",
   "scripts": {
     "build": "rimraf dist && tsc --project tsconfig.build.json",
@@ -36,6 +40,7 @@
     "format-check": "prettier --check .",
     "lint": "eslint . --max-warnings=0",
     "lint-package": "publint --strict",
+    "prepublishOnly": "publish-gate check",
     "test": "vitest run",
     "test-coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit --project tsconfig.json"
@@ -45,6 +50,7 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@silvermoon-work/devtool.publish-gate": "0.1.0-rc.4",
     "@types/node": "26.6.6",
     "@vitest/coverage-v8": "5.1.0",
     "eslint": "10.15.0",
