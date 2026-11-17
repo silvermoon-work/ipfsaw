@@ -50,24 +50,32 @@ ipfsaw registry remove <schema-uri> [--data-dir <path>]
 
 ## 质量门禁
 
-| 命令                     | 职责                                                             |
-| ------------------------ | ---------------------------------------------------------------- |
-| `pnpm verify-dependency` | 核验已安装主包身份、准确版本和 CLI export                        |
-| `pnpm build`             | 清理自有 dist，再生成 ESM bin、声明与两种 maps                   |
-| `pnpm typecheck`         | 严格检查源码、测试及 Vitest 配置                                 |
-| `pnpm lint`              | 源码／测试 type-aware ESLint，JS 配置与脚本基础 lint             |
-| `pnpm format-check`      | 只读格式检查                                                     |
-| `pnpm format`            | 显式格式化，非只读操作                                           |
-| `pnpm test`              | 单次运行受控 mock 测试，不开启 watch                             |
-| `pnpm test-coverage`     | 包含所有源码，四项全局门限均为 90%                               |
-| `pnpm check-scripts`     | 检查 scripts 与固定入口一对一、无额外参数                        |
-| `pnpm lint-package`      | 检查身份、准确依赖、allowlist、bin 与 maps；publint 文件系统检查 |
-| `pnpm check`             | 顺序执行依赖、格式、构建、类型、lint、覆盖、脚本及包检查         |
+| 命令                 | 职责                                                                   |
+| -------------------- | ---------------------------------------------------------------------- |
+| `pnpm build`         | 清理自有 dist，再生成 ESM bin、声明与两种 maps                         |
+| `pnpm typecheck`     | 严格检查源码、测试及 Vitest 配置                                       |
+| `pnpm lint`          | 源码／测试 type-aware ESLint，JS 配置与脚本基础 lint                   |
+| `pnpm format-check`  | 只读格式检查                                                           |
+| `pnpm format`        | 显式格式化，非只读操作                                                 |
+| `pnpm test`          | 单次运行受控 mock 测试，不开启 watch                                   |
+| `pnpm test-coverage` | 包含所有源码，四项全局门限均为 90%                                     |
+| `pnpm lint-package`  | 检查身份、已安装准确依赖、allowlist、bin 与 maps；publint 文件系统检查 |
+| `pnpm check`         | 顺序执行格式、构建、类型、lint、覆盖及包检查                           |
 
 默认测试只证明薄入口精确委派、等待完成及退出码传播；mock 不是完整主包或
 registry 验收。`lint-package` 使用 publint 公共 API 的 `pack:false`，
 warnings／errors 均失败，不在门禁里偷偷生成或发布 tarball。任一步失败均传播
 为非零结果，不调整覆盖率来掩盖。
+
+脚手架采用 okr-agent 的直接工具命令思路，但本仓只有一个包：不引入 Turbo、
+catalog、子包发现、跨包依赖排序或发布映射。Vitest 自动读取根目录配置；
+`check` 通过 `&&` 在首个失败处停止，`build` 用 rimraf 清除自有 `dist` 后运行
+tsc。只有包含实际校验逻辑的 `scripts/lint-package.mjs` 保留为自定义脚本；
+准确依赖检查已合并到该入口，不再单独维护命令分发器或空壳脚本。
+
+直接命令支持工具原生参数，例如 `pnpm test test/bin.test.ts`。这项工程实验
+已获用户确认，但仍与未更新的 `AGENTS.md` 固定 Node 入口规则存在冲突；
+本次不修改该标准，也不声称通过仍要求旧接口的 Check。
 
 PR/main CI 在开发 Node 和 Node `22.15.0`／`24.11.1` 上运行完整检查及真实
 CLI 的 help/version 冒烟。始终运行的 `Release verification (v1)` 聚合门禁

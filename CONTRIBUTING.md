@@ -14,12 +14,15 @@ strict TypeScript、源码和测试的 type-aware lint、只读 format-check、�
 以及包含所有源码的 statements／branches／functions／lines 四项全局 90%
 覆盖率门限。对行为变更增加受控测试；mock 不证明 registry 或双 tarball 联调。
 
-固定 package scripts 必须对应 `node scripts/<same-name>.mjs`，不接受额外
-参数，公共实现放 `scripts/lib/`。定向测试可以显式运行：
+package scripts 直接调用标准工具，支持工具原生参数。定向测试：
 
 ```sh
-pnpm exec vitest run --root . --config vitest.config.ts test/bin.test.ts
+pnpm test test/bin.test.ts
 ```
+
+本仓不使用 monorepo 的 Turbo、catalog 或跨包调度；只有实际包检查逻辑保留为
+自定义脚本。该精简已获用户确认，但与未更新的 `AGENTS.md` 固定脚本规则存在
+公开冲突；不要通过修改 Check 标准或资产掩盖此差异。
 
 `src/bin.ts` 保持三行精确委派，不增加 wrapper、argv 改写、错误捕获、库 API
 或主包逻辑。维护运行时准确 semver，更新依赖时同步

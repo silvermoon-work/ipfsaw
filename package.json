@@ -30,17 +30,15 @@
   },
   "packageManager": "pnpm@11.28.12",
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "check": "node scripts/check.mjs",
-    "check-scripts": "node scripts/check-scripts.mjs",
-    "format": "node scripts/format.mjs",
-    "format-check": "node scripts/format-check.mjs",
-    "lint": "node scripts/lint.mjs",
+    "build": "rimraf dist && tsc --project tsconfig.build.json",
+    "check": "pnpm format-check && pnpm build && pnpm typecheck && pnpm lint && pnpm test-coverage && pnpm lint-package",
+    "format": "prettier --write .",
+    "format-check": "prettier --check .",
+    "lint": "eslint . --max-warnings=0",
     "lint-package": "node scripts/lint-package.mjs",
-    "test": "node scripts/test.mjs",
-    "test-coverage": "node scripts/test-coverage.mjs",
-    "typecheck": "node scripts/typecheck.mjs",
-    "verify-dependency": "node scripts/verify-dependency.mjs"
+    "test": "vitest run",
+    "test-coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
     "@silvermoon-work/ipfsaw": "0.1.0-rc.0"
@@ -53,6 +51,7 @@
     "globals": "17.14.0",
     "prettier": "3.10.1",
     "publint": "0.3.25",
+    "rimraf": "6.1.4",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.2",
     "vitest": "5.1.0"

@@ -22,9 +22,15 @@
   默认单次 Vitest，覆盖 include 全部 src，四项 global thresholds 显式为 90。
 - 本仓一个根包，`pnpm-workspace.yaml` 没有子成员；它只承载严格安装策略，
   不声称构成多项目测试 runner。
-- 完整门禁为 `pnpm check`：verify-dependency → format-check → build → typecheck
-  → lint → test-coverage → check-scripts → lint-package，失败立即传播。
-- 固定 scripts 一对一，无冒号、无额外参数；共享实现位于 scripts/lib。
+- 完整门禁为 `pnpm check`：format-check → build → typecheck → lint →
+  test-coverage → lint-package，通过直接 pnpm 命令串联，失败立即传播。
+- 用户明确批准学习 okr-agent 的直接工具命令实验，删除固定空壳脚本、
+  命令分发器及只检查旧接口的 check-scripts。原样保留标准 `AGENTS.md`；
+  其固定 Node 入口规则与本次实验存在公开冲突，不宣称通过旧 Check，
+  不修改 Check 作者代码、测试或资产来掩盖差异。
+- 本仓是单包，不引入 Turbo、catalog、子包发现、跨包依赖排序或发布映射。
+  Vitest 从根目录自动发现配置；build 用 rimraf 清理自有 dist 后运行 tsc。
+  仅保留有真实校验逻辑的 scripts/lint-package.mjs，直接命令接受原生工具参数。
 
 ## Candidates and release
 
@@ -32,7 +38,7 @@
   安装不使用本地 tarball override；锁文件与最终 packed manifest 保留准确 semver。
 - 用户明确批准该准确主包版本的 `minimumReleaseAgeExclude` 单版本例外，
   不扩展到其他依赖或后续版本，不关闭其他供应链检查。
-- `verify-dependency` 核对已安装主包的身份、准确版本和 CLI export；
+- `lint-package` 同时核对已安装主包的身份、准确版本和 CLI export；
   该检查不替代最终 tarball 和独立 consumer 的真实交付验证。
 - `pnpm lint-package` 的 publint 使用公共 API `pack:false`，warnings／errors 均失败；不生成最终 tarball。
   整合者审查后负责一次性 pack、独立 consumer 的真实主包联调和原生浏览器验收。
