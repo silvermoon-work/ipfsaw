@@ -27,7 +27,7 @@ mock 替代准确主包。
 
 用户已明确批准仅 `@silvermoon-work/ipfsaw@0.1.0-rc.0` 的发布冷却期例外，
 记录在 `minimumReleaseAgeExclude`。发布门禁按本次指定的准确版本
-`@silvermoon-work/devtool.publish-gate@0.1.0-rc.4` 安装，同样仅对该版本
+`@silvermoon-work/devtool.publish-gate@0.1.0` 安装，同样仅对该版本
 保留安装时生成的冷却期例外。其他包的冷却策略不变；这不是全局关闭供应链检查，
 也不授权自动扩展到后续版本。
 
@@ -110,7 +110,7 @@ pnpm --config.ignore-scripts=true pack --out <exact-alias-candidate.tgz>
 
 已参考 OKR Agent 配置 [发布 Workflow](./.github/workflows/publish-npm.yaml)，
 根目录 [deliverable.yaml](./deliverable.yaml) 声明唯一 npm 交付包。
-固定安装的 `@silvermoon-work/devtool.publish-gate@0.1.0-rc.4` 通过
+固定安装的 `@silvermoon-work/devtool.publish-gate@0.1.0` 通过
 `prepublishOnly: publish-gate check` 验证发布上下文，不使用本仓自制发布器。
 这项接入延续直接工具命令实验，与 `AGENTS.md` 的固定 release 入口和
 tarball publisher 约定存在差异，不宣称满足该旧接口。

@@ -38,7 +38,7 @@
   安装不使用本地 tarball override；锁文件与最终 packed manifest 保留准确 semver。
 - 用户明确批准该准确主包版本的 `minimumReleaseAgeExclude` 单版本例外，
   不扩展到其他依赖或后续版本，不关闭其他供应链检查。
-- 发布门禁固定依赖已发布的 `@silvermoon-work/devtool.publish-gate@0.1.0-rc.4`；
+- 发布门禁固定依赖已发布的 `@silvermoon-work/devtool.publish-gate@0.1.0`；
   按用户指定准确版本安装，保留 pnpm 自动生成的该单版本冷却期例外。
 - `lint-package` 仅执行标准包检查，不再将当前 alias 的身份、准确版本、
   已安装依赖或源码文本写死为通用脚手架门禁；准确交付仍须最终 tarball

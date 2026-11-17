@@ -6,4 +6,4 @@ allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
   - "@silvermoon-work/ipfsaw@0.1.0-rc.0"
-  - "@silvermoon-work/devtool.publish-gate@0.1.0-rc.4"
+  - "@silvermoon-work/devtool.publish-gate@0.1.0"
