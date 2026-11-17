@@ -20,15 +20,17 @@ package scripts 直接调用标准工具，支持工具原生参数。定向测�
 pnpm test test/bin.test.ts
 ```
 
-本仓不使用 monorepo 的 Turbo、catalog 或跨包调度；只有实际包检查逻辑保留为
-自定义脚本。该精简已获用户确认，但与未更新的 `AGENTS.md` 固定脚本规则存在
+本仓不使用 monorepo 的 Turbo、catalog 或跨包调度，也不保留自定义工具脚本。
+该精简已获用户确认，但与未更新的 `AGENTS.md` 固定脚本规则存在
 公开冲突；不要通过修改 Check 标准或资产掩盖此差异。
 
 `src/bin.ts` 保持三行精确委派，不增加 wrapper、argv 改写、错误捕获、库 API
 或主包逻辑。维护运行时准确 semver，更新依赖时同步
 锁文件并核验 Node／peer 兼容；本轮不要自行升级工具。
 
-`pnpm lint-package` 是不打包的文件系统检查；最终打包由整合者审阅后只做
+`pnpm lint-package` 直接运行 `publint --strict`，warnings／errors
+均失败，使用默认打包检查但不发布，不检查写死的 alias 身份或源码文本；
+最终交付 tarball 仍由整合者审阅后只打包
 一次，再在独立新 consumer 验证实际 packed manifest 与准确双制品。禁止
 stage／commit／push／发布或启动第二份 Silvermoon idea，除非任务明确授权。
 本地完整门禁不是未来准确 SHA 远端 CI 或 npm Trusted Publishing 的替代品。

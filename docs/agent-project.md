@@ -30,7 +30,7 @@
   不修改 Check 作者代码、测试或资产来掩盖差异。
 - 本仓是单包，不引入 Turbo、catalog、子包发现、跨包依赖排序或发布映射。
   Vitest 从根目录自动发现配置；build 用 rimraf 清理自有 dist 后运行 tsc。
-  仅保留有真实校验逻辑的 scripts/lint-package.mjs，直接命令接受原生工具参数。
+  不保留自定义工具脚本；lint-package 直接运行 publint，命令接受原生工具参数。
 
 ## Candidates and release
 
@@ -38,10 +38,12 @@
   安装不使用本地 tarball override；锁文件与最终 packed manifest 保留准确 semver。
 - 用户明确批准该准确主包版本的 `minimumReleaseAgeExclude` 单版本例外，
   不扩展到其他依赖或后续版本，不关闭其他供应链检查。
-- `lint-package` 同时核对已安装主包的身份、准确版本和 CLI export；
-  该检查不替代最终 tarball 和独立 consumer 的真实交付验证。
-- `pnpm lint-package` 的 publint 使用公共 API `pack:false`，warnings／errors 均失败；不生成最终 tarball。
-  整合者审查后负责一次性 pack、独立 consumer 的真实主包联调和原生浏览器验收。
+- `lint-package` 仅执行标准包检查，不再将当前 alias 的身份、准确版本、
+  已安装依赖或源码文本写死为通用脚手架门禁；准确交付仍须最终 tarball
+  和独立 consumer 的真实验证。
+- `pnpm lint-package` 直接运行 `publint --strict`，
+  warnings／errors 均失败；使用默认打包检查但不发布，不替代最终交付 tarball 验证。
+  整合者审查后负责最终交付的一次性 pack、独立 consumer 的真实主包联调和原生浏览器验收。
 - 当前包 private，无发布脚本／workflow。仍需准确 alias 交付验证与发布授权，
   不搭建假成功 CI，不 publish、push tag、改 dist-tag 或上传制品。
 - PR/main CI 覆盖默认开发 Node 与 22.15.0 / 24.11.1 的完整检查和真实 CLI

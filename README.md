@@ -50,28 +50,29 @@ ipfsaw registry remove <schema-uri> [--data-dir <path>]
 
 ## 质量门禁
 
-| 命令                 | 职责                                                                   |
-| -------------------- | ---------------------------------------------------------------------- |
-| `pnpm build`         | 清理自有 dist，再生成 ESM bin、声明与两种 maps                         |
-| `pnpm typecheck`     | 严格检查源码、测试及 Vitest 配置                                       |
-| `pnpm lint`          | 源码／测试 type-aware ESLint，JS 配置与脚本基础 lint                   |
-| `pnpm format-check`  | 只读格式检查                                                           |
-| `pnpm format`        | 显式格式化，非只读操作                                                 |
-| `pnpm test`          | 单次运行受控 mock 测试，不开启 watch                                   |
-| `pnpm test-coverage` | 包含所有源码，四项全局门限均为 90%                                     |
-| `pnpm lint-package`  | 检查身份、已安装准确依赖、allowlist、bin 与 maps；publint 文件系统检查 |
-| `pnpm check`         | 顺序执行格式、构建、类型、lint、覆盖及包检查                           |
+| 命令                 | 职责                                                  |
+| -------------------- | ----------------------------------------------------- |
+| `pnpm build`         | 清理自有 dist，再生成 ESM bin、声明与两种 maps        |
+| `pnpm typecheck`     | 严格检查源码、测试及 Vitest 配置                      |
+| `pnpm lint`          | 源码／测试 type-aware ESLint，JS 配置与脚本基础 lint  |
+| `pnpm format-check`  | 只读格式检查                                          |
+| `pnpm format`        | 显式格式化，非只读操作                                |
+| `pnpm test`          | 单次运行受控 mock 测试，不开启 watch                  |
+| `pnpm test-coverage` | 包含所有源码，四项全局门限均为 90%                    |
+| `pnpm lint-package`  | publint 默认打包检查，warnings／errors 均失败，不发布 |
+| `pnpm check`         | 顺序执行格式、构建、类型、lint、覆盖及包检查          |
 
 默认测试只证明薄入口精确委派、等待完成及退出码传播；mock 不是完整主包或
-registry 验收。`lint-package` 使用 publint 公共 API 的 `pack:false`，
-warnings／errors 均失败，不在门禁里偷偷生成或发布 tarball。任一步失败均传播
+registry 验收。`lint-package` 直接运行 `publint --strict`，
+warnings／errors 均失败，使用默认打包检查但不发布，也不替代最终交付 tarball
+的独立验证。任一步失败均传播
 为非零结果，不调整覆盖率来掩盖。
 
 脚手架采用 okr-agent 的直接工具命令思路，但本仓只有一个包：不引入 Turbo、
 catalog、子包发现、跨包依赖排序或发布映射。Vitest 自动读取根目录配置；
 `check` 通过 `&&` 在首个失败处停止，`build` 用 rimraf 清除自有 `dist` 后运行
-tsc。只有包含实际校验逻辑的 `scripts/lint-package.mjs` 保留为自定义脚本；
-准确依赖检查已合并到该入口，不再单独维护命令分发器或空壳脚本。
+tsc。不保留自定义脚本、命令分发器或空壳入口；包检查直接使用 publint，
+不再将当前 alias 的名称、版本或源码文本写死为通用脚手架门禁。
 
 直接命令支持工具原生参数，例如 `pnpm test test/bin.test.ts`。这项工程实验
 已获用户确认，但仍与未更新的 `AGENTS.md` 固定 Node 入口规则存在冲突；
@@ -101,8 +102,8 @@ pnpm --config.ignore-scripts=true pack --out <exact-alias-candidate.tgz>
 
 ## 发布边界
 
-包和包门禁仍显式要求 `private: true`。开放发布需要单独获准后同步调整这两处
-保护，确认准确版本和主干提交、真实依赖可用性、准确 SHA 远端质量检查、
+包仍显式设置 `private: true`。开放发布需要单独获准后调整此设置，
+确认准确版本和主干提交、真实依赖可用性、准确 SHA 远端质量检查、
 标准固定 release 入口与 publisher，以及 npm Trusted Publishing。
 当前没有启用发布 workflow。
 

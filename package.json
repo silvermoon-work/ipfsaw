@@ -35,7 +35,7 @@
     "format": "prettier --write .",
     "format-check": "prettier --check .",
     "lint": "eslint . --max-warnings=0",
-    "lint-package": "node scripts/lint-package.mjs",
+    "lint-package": "publint --strict",
     "test": "vitest run",
     "test-coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit --project tsconfig.json"
