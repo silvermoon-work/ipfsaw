@@ -40,7 +40,7 @@
     "test": "node scripts/test.mjs",
     "test-coverage": "node scripts/test-coverage.mjs",
     "typecheck": "node scripts/typecheck.mjs",
-    "verify-candidate": "node scripts/verify-candidate.mjs"
+    "verify-dependency": "node scripts/verify-dependency.mjs"
   },
   "dependencies": {
     "@silvermoon-work/ipfsaw": "0.1.0-rc.0"

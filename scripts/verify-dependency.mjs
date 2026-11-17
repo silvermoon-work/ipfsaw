@@ -1,2 +1,2 @@
 import { run } from "./lib/commands.mjs";
-await run("verify-candidate");
+await run("verify-dependency");

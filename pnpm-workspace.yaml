@@ -4,6 +4,5 @@ strictPeerDependencies: true
 saveExact: true
 allowBuilds:
   esbuild: true
-# Development only. package.json retains the exact future registry dependency.
-overrides:
-  "@silvermoon-work/ipfsaw@0.1.0-rc.0": file:.artifacts/scoped-main.tgz
+minimumReleaseAgeExclude:
+  - "@silvermoon-work/ipfsaw@0.1.0-rc.0"
