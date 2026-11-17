@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { readFile, readdir, rm } from "node:fs/promises";
@@ -19,10 +18,8 @@ const actions = [
   "test",
   "test-coverage",
   "typecheck",
-  "verify-candidate",
+  "verify-dependency",
 ];
-const candidateSha256 =
-  "766a1fe8db0af60ff00bca5e67a87617551c0d17f55de02232336b45a6994db8";
 const json = async (path) =>
   JSON.parse(await readFile(join(root, path), "utf8"));
 function tool(packageName, binary, args) {
@@ -43,14 +40,19 @@ function tool(packageName, binary, args) {
     `${binary} failed (${result.status ?? result.signal})`,
   );
 }
-async function verifyCandidate() {
-  const candidate = await readFile(join(root, ".artifacts", "scoped-main.tgz"));
+async function verifyDependency() {
+  const manifest = await json("package.json");
+  const dependency = require("@silvermoon-work/ipfsaw/package.json");
+  assert.equal(dependency.name, "@silvermoon-work/ipfsaw");
   assert.equal(
-    createHash("sha256").update(candidate).digest("hex"),
-    candidateSha256,
-    "Wrong scoped candidate. See README; never substitute a stub or unknown tarball.",
+    dependency.version,
+    manifest.dependencies["@silvermoon-work/ipfsaw"],
+    "Installed scoped package must match the exact runtime dependency.",
   );
-  console.log(`Scoped candidate SHA-256 verified: ${candidateSha256}`);
+  import.meta.resolve("@silvermoon-work/ipfsaw/cli");
+  console.log(
+    `Installed scoped dependency verified: ${dependency.name}@${dependency.version}`,
+  );
 }
 async function checkScripts() {
   const manifest = await json("package.json");
@@ -114,8 +116,8 @@ async function checkPackage() {
 }
 async function execute(action) {
   switch (action) {
-    case "verify-candidate":
-      await verifyCandidate();
+    case "verify-dependency":
+      await verifyDependency();
       return;
     case "check-scripts":
       await checkScripts();
@@ -159,7 +161,7 @@ async function execute(action) {
       return;
     case "check":
       for (const step of [
-        "verify-candidate",
+        "verify-dependency",
         "format-check",
         "build",
         "typecheck",

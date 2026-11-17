@@ -4,15 +4,12 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  "@silvermoon-work/ipfsaw@0.1.0-rc.0": file:.artifacts/scoped-main.tgz
-
 importers:
   .:
     dependencies:
       "@silvermoon-work/ipfsaw":
-        specifier: file:.artifacts/scoped-main.tgz
-        version: file:.artifacts/scoped-main.tgz(supports-color@10.2.2)
+        specifier: 0.1.0-rc.0
+        version: 0.1.0-rc.0(supports-color@10.2.2)
     devDependencies:
       "@eslint/js":
         specifier: 10.0.1
@@ -632,6 +629,7 @@ packages:
     engines: { node: ^20.19.0 || >=22.12.0 }
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   "@rolldown/binding-linux-s390x-gnu@1.2.19":
     resolution:
@@ -651,7 +649,6 @@ packages:
     engines: { node: ^20.19.0 || >=22.12.0 }
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   "@rolldown/binding-linux-x64-musl@1.2.19":
     resolution:
@@ -724,13 +721,11 @@ packages:
       }
     engines: { node: ">=22.13.0" }
 
-  "@silvermoon-work/ipfsaw@file:.artifacts/scoped-main.tgz":
+  "@silvermoon-work/ipfsaw@0.1.0-rc.0":
     resolution:
       {
-        integrity: sha512-I8HnXpJbIuHqnO97YzHAmZUTUQ2QhjO8Lphza0rOl84Kqsl6LjCd2QWs7GqTsx4LmwWt8yXRBGftoTJS7peMAQ==,
-        tarball: file:.artifacts/scoped-main.tgz,
+        integrity: sha512-rZuwRjt33aiduj404a3sVMiUiyizOwt/pcccu55ZJyvtb68FpXDLGXe9SDEHl/u4VJdZu+nChg7ms2OB6rsYGw==,
       }
-    version: 0.1.0-rc.0
     engines: { node: ">=22.15.0" }
     hasBin: true
 
@@ -1810,6 +1805,7 @@ packages:
     engines: { node: ">= 12.0.0" }
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   lightningcss-linux-arm64-musl@1.33.0:
     resolution:
@@ -1819,6 +1815,7 @@ packages:
     engines: { node: ">= 12.0.0" }
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   lightningcss-linux-x64-gnu@1.33.0:
     resolution:
@@ -1828,7 +1825,6 @@ packages:
     engines: { node: ">= 12.0.0" }
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   lightningcss-linux-x64-musl@1.33.0:
     resolution:
@@ -3286,7 +3282,7 @@ snapshots:
       - encoding
       - supports-color
 
-  "@silvermoon-work/ipfsaw@file:.artifacts/scoped-main.tgz(supports-color@10.2.2)":
+  "@silvermoon-work/ipfsaw@0.1.0-rc.0(supports-color@10.2.2)":
     dependencies:
       "@ipld/car": 5.4.6
       "@silvermoon-work/ipfs-store": 0.1.0-rc.3(supports-color@10.2.2)
